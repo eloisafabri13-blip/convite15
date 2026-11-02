@@ -350,6 +350,54 @@
         <p>Um novo sonho começa agora.</p>
     </footer>
 
+    <!-- INÍCIO DA SEÇÃO DE MÚSICA DE FUNDO -->
+    <!-- Elemento invisível do YouTube carregando Vejo Enfim a Luz Brilhar (Demazzi Orquestra) -->
+    <div id="musicContainer" class="hidden"></div>
+
+    <!-- Floating Music Control Player Widget -->
+    <div class="fixed bottom-5 right-5 z-50 glass-card p-3 rounded-full flex items-center gap-3 border border-tangled-gold/40 shadow-[0_0_20px_rgba(243,192,107,0.3)]">
+        <button id="toggleMusicBtn" onclick="toggleMusic()" class="w-10 h-10 bg-gradient-to-r from-tangled-gold to-tangled-goldLight text-tangled-deep rounded-full flex items-center justify-center font-bold text-sm hover:scale-110 transition shadow-md">
+            <i id="musicIcon" class="fas fa-music"></i>
+        </button>
+        <span id="musicStatus" class="text-xs font-medium text-tangled-goldLight pr-2 hidden sm:inline">
+            Vejo Enfim a Luz Brilhar 🎵
+        </span>
+    </div>
+
+    <script>
+        let musicPlaying = false;
+        const videoId = "AYaX-NIUkw0";
+
+        function toggleMusic() {
+            const container = document.getElementById('musicContainer');
+            const icon = document.getElementById('musicIcon');
+            const statusText = document.getElementById('musicStatus');
+
+            if (!musicPlaying) {
+                // Inicia o áudio do YouTube no iframe invisível
+                container.innerHTML = `<iframe width="1" height="1" src="https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&enablejsapi=1" allow="autoplay" frameborder="0"></iframe>`;
+                icon.className = "fas fa-pause";
+                statusText.innerText = "Tocando 🎶";
+                musicPlaying = true;
+            } else {
+                // Para a música removendo o iframe
+                container.innerHTML = "";
+                icon.className = "fas fa-play";
+                statusText.innerText = "Vejo Enfim a Luz Brilhar 🎵";
+                musicPlaying = false;
+            }
+        }
+
+        // Tenta iniciar a música ao primeiro clique na página caso o autoplay seja bloqueado pelo navegador
+        document.addEventListener('click', function startAudioOnInteraction() {
+            if (!musicPlaying) {
+                toggleMusic();
+            }
+            document.removeEventListener('click', startAudioOnInteraction);
+        }, { once: true });
+    </script>
+    <!-- FIM DA SEÇÃO DE MÚSICA DE FUNDO -->
+
     <script>
         // --- Generate Dynamic Floating Lanterns Background ---
         function createLanterns() {
